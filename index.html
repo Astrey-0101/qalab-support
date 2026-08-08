@@ -1,62 +1,278 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>QALAB｜品質保証 × 分析化学 × DX</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALAB｜品質保証 × 分析化学 × DX</title>
+<meta name="description" content="合同会社QALABは、品質保証の構築・分析法開発・DX推進を統合的に支援します。食品・酒造・医薬品メーカー向け。">
+<style>
+  :root {
+    --ink: #211d16;
+    --ink-soft: #5b5344;
+    --paper: #f6f1e6;
+    --surface: #ece4d2;
+    --line: rgba(33, 29, 22, 0.14);
+    --navy: #0b2a52;
+    --navy-soft: #12386b;
+    --gold: #96731c;
+    --gold-strong: #7a5c14;
+    --tag-bg: rgba(150, 115, 28, 0.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #f1ecdd;
+      --ink-soft: #b9ae95;
+      --paper: #0a1c33;
+      --surface: #102a4a;
+      --line: rgba(241, 236, 221, 0.14);
+      --navy: #7fb0e8;
+      --navy-soft: #a9c9f0;
+      --gold: #dcb04e;
+      --gold-strong: #eecb7c;
+      --tag-bg: rgba(220, 176, 78, 0.14);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #f1ecdd;
+    --ink-soft: #b9ae95;
+    --paper: #0a1c33;
+    --surface: #102a4a;
+    --line: rgba(241, 236, 221, 0.14);
+    --navy: #7fb0e8;
+    --navy-soft: #a9c9f0;
+    --gold: #dcb04e;
+    --gold-strong: #eecb7c;
+    --tag-bg: rgba(220, 176, 78, 0.14);
+  }
 
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 40px;
-      background: #0f0f0f;
-      color: #f5f5f5;
-    }
-    h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
-    h2 { font-size: 1.4rem; margin-top: 2rem; }
-    p { line-height: 1.7; }
-    .accent { color: #00c4b4; font-weight: 700; }
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      background: #00c4b4;
-      color: #000;
-      font-weight: 700;
-      border-radius: 6px;
-      text-decoration: none;
-    }
-    .section { margin-top: 40px; }
-  </style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", "Noto Sans JP", "Segoe UI", sans-serif;
+    line-height: 1.75;
+  }
+  .display {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+
+  .hero {
+    background: var(--navy);
+    color: #f6f1e6;
+    padding: 96px 8vw 88px;
+  }
+  :root:not([data-theme="light"]) .hero { background: #061527; }
+  :root[data-theme="dark"] .hero { background: #061527; }
+  .kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 600;
+    margin: 0 0 14px;
+    color: #f6f1e6;
+  }
+  .hero .sub {
+    font-size: 1.1rem;
+    color: rgba(246,241,230,0.8);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .hero .org {
+    margin-top: 40px;
+    font-size: 0.88rem;
+    color: rgba(246,241,230,0.55);
+    letter-spacing: 0.03em;
+  }
+
+  main { padding: 72px 8vw 96px; max-width: 1160px; margin: 0 auto; }
+
+  section + section { margin-top: 72px; }
+  h2 {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .rule {
+    width: 56px;
+    height: 2px;
+    background: var(--gold);
+    border: none;
+    margin: 16px 0 30px;
+  }
+
+  .lead { max-width: 66ch; font-size: 1.05rem; color: var(--ink-soft); }
+  .lead strong { color: var(--gold-strong); font-weight: 700; }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .pillars > div { background: var(--paper); padding: 26px 24px; }
+  .pillars h3 {
+    margin: 0 0 10px;
+    font-size: 1.02rem;
+    color: var(--gold-strong);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+  .pillars p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+  @media (max-width: 780px) { .pillars { grid-template-columns: 1fr; } }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .nav-grid { grid-template-columns: 1fr; } }
+
+  .nav-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 30px 26px;
+    background: var(--surface);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .nav-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .nav-card .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold-strong);
+    background: var(--tag-bg);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 3px 9px;
+    margin-bottom: 14px;
+    align-self: flex-start;
+  }
+  .nav-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.15rem;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+  .nav-card p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
+  .nav-card .go {
+    margin-top: 18px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--gold-strong);
+  }
+
+  .contact-box {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 30px;
+    background: var(--surface);
+  }
+  .contact-box a { color: var(--gold-strong); font-weight: 700; text-decoration: none; }
+  .contact-box a:hover { text-decoration: underline; }
+
+  footer {
+    padding: 32px 8vw 48px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+  }
+</style>
 </head>
 
 <body>
 
-<h1>QALAB</h1>
-<h3 class="accent">品質保証 × 分析化学 × DX の統合ソリューション</h3>
-
-<p>
-  QALABは、品質保証の「困った」を構築・分析・DXで一気に解決する  
-  <strong>QA/DX Architect（品質保証アーキテクト）</strong>の専門サービスです。
-</p>
-
-<div class="section">
-  <h2>サービスの3本柱</h2>
-  <ul>
-    <li>品質保証・規格構築（HACCP / FSSC / GMP / ISO17025）</li>
-    <li>分析法開発・妥当性評価（LC-MS/MS・GC-MS/MS・PCR）</li>
-    <li>QA × DX（業務自動化・データベース・試験削減）</li>
-  </ul>
+<div class="hero">
+  <p class="kicker">Quality Assurance × Analytical Chemistry × DX</p>
+  <h1 class="display">品質保証を、<br>利益を生む機能に変える。</h1>
+  <p class="sub">合同会社QALABは、規格構築・分析法開発・DX推進を統合し、食品・酒造・医薬品メーカーの品質保証を次のステージへ引き上げる専門サービスです。</p>
+  <p class="org">合同会社QALAB　｜　代表社員　遠藤 怜　｜　新潟県新潟市</p>
 </div>
 
-<div class="section">
-  <h2>営業資料（スライド）</h2>
-  <p>サービス内容を詳しく知りたい方は、以下のスライドをご覧ください。</p>
+<main>
 
-  <a href="slides.html" class="btn">営業資料を見る</a>
-  <a href="services.html" class="btn">サービス一覧を見る</a>
-</div>
+  <section>
+    <p class="kicker">Mission</p>
+    <h2 class="display">QA/DX Architect（品質保証アーキテクト）</h2>
+    <hr class="rule">
+    <p class="lead">
+      規格構築・分析化学・DXを横断できる技術者は多くありません。食品・酒造・医薬品の3業界で12年、
+      現場のQC/QAから試験法開発、ISO17025認定プロジェクトの代表まで担ってきた経験をもとに、
+      <strong>「品質保証の困った」を構築・分析・DXで一気に解決する</strong>ことを目指しています。
+    </p>
+  </section>
+
+  <section>
+    <p class="kicker">3 Pillars</p>
+    <h2 class="display">サービスの3本柱</h2>
+    <hr class="rule">
+    <div class="pillars">
+      <div>
+        <h3>① 品質保証・規格構築</h3>
+        <p>HACCP / FSSC22000 / GMP / GCTP / ISO17025 の文書体系構築・監査対応を支援します。</p>
+      </div>
+      <div>
+        <h3>② 分析法開発・妥当性評価</h3>
+        <p>LC-MS/MS・GC-MS/MS・PCRなど高度分析を用いた試験法開発と、劣化モデル・試験削減の設計を行います。</p>
+      </div>
+      <div>
+        <h3>③ QA × DX</h3>
+        <p>現場を理解したDX人材として、Excel自動化・データベース構築・記録電子化で業務効率化を実現します。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Explore</p>
+    <h2 class="display">詳しく見る</h2>
+    <hr class="rule">
+    <div class="nav-grid">
+      <a class="nav-card" href="slides.html">
+        <span class="tag">Company Slide</span>
+        <h3>会社概要スライド</h3>
+        <p>QALABのミッション・強み・実績・サービス内容を、食品メーカー全般の担当者向けにまとめたスライド資料です。</p>
+        <span class="go">スライドを見る →</span>
+      </a>
+      <a class="nav-card" href="services.html">
+        <span class="tag">Services</span>
+        <h3>サービス一覧</h3>
+        <p>品質保証・分析法開発・DXの3サービスについて、支援内容と料金の目安を一覧で確認できます。</p>
+        <span class="go">サービス一覧を見る →</span>
+      </a>
+      <a class="nav-card" href="slide_sake.html">
+        <span class="tag">Sake Brewery</span>
+        <h3>酒造メーカー特化プラン</h3>
+        <p>新潟県の酒造メーカー向けに、製造工程ごとに設計したDX導入プランのスライドです。</p>
+        <span class="go">スライドを見る →</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Contact</p>
+    <h2 class="display">お問い合わせ</h2>
+    <hr class="rule">
+    <div class="contact-box">
+      <p style="margin:0 0 12px;">品質保証・分析法開発・DXに関するご相談は、まずは無料相談から承ります。</p>
+      <p style="margin:0;"><a href="mailto:contact@qalab-support.com">contact@qalab-support.com</a> 宛にメールでお問い合わせください。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 合同会社QALAB
+</footer>
 
 </body>
 </html>
