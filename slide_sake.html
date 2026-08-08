@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>酒造メーカー向け DX導入プラン｜QALAB</title>
+<style>
+  :root {
+    --ink: #211d16;
+    --ink-soft: #5b5344;
+    --paper: #f6f1e6;
+    --surface: #ece4d2;
+    --line: rgba(33, 29, 22, 0.14);
+    --navy: #0b2a52;
+    --navy-soft: #12386b;
+    --gold: #96731c;
+    --gold-strong: #7a5c14;
+    --tag-bg: rgba(150, 115, 28, 0.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #f1ecdd;
+      --ink-soft: #b9ae95;
+      --paper: #0a1c33;
+      --surface: #102a4a;
+      --line: rgba(241, 236, 221, 0.14);
+      --navy: #7fb0e8;
+      --navy-soft: #a9c9f0;
+      --gold: #dcb04e;
+      --gold-strong: #eecb7c;
+      --tag-bg: rgba(220, 176, 78, 0.14);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #f1ecdd;
+    --ink-soft: #b9ae95;
+    --paper: #0a1c33;
+    --surface: #102a4a;
+    --line: rgba(241, 236, 221, 0.14);
+    --navy: #7fb0e8;
+    --navy-soft: #a9c9f0;
+    --gold: #dcb04e;
+    --gold-strong: #eecb7c;
+    --tag-bg: rgba(220, 176, 78, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-snap-type: y proximity; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", "Noto Sans JP", "Segoe UI", sans-serif;
+    line-height: 1.75;
+  }
+
+  .display {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+    text-wrap: balance;
+  }
+
+  .rail {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    z-index: 50;
+  }
+  .rail button {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .rail button.active {
+    opacity: 1;
+    transform: scale(1.5);
+    background: var(--gold);
+  }
+  @media (max-width: 720px) {
+    .rail { display: none; }
+  }
+
+  .home-link {
+    position: fixed;
+    left: 22px;
+    top: 22px;
+    z-index: 50;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gold-strong);
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 6px 16px;
+    text-decoration: none;
+  }
+  .cover .home-link, .closing .home-link { color: #f6f1e6; border-color: var(--gold); background: rgba(0,0,0,0.15); }
+
+  section {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 88px 8vw;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: var(--ink);
+  }
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .sub {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    margin: 0 0 34px;
+    max-width: 60ch;
+  }
+  .rule {
+    width: 56px;
+    height: 2px;
+    background: var(--gold);
+    border: none;
+    margin: 18px 0 32px;
+  }
+
+  .lead {
+    max-width: 62ch;
+    font-size: 1.08rem;
+  }
+  .lead p { margin: 0 0 16px; }
+  .lead strong { color: var(--gold-strong); font-weight: 700; }
+
+  ul.points {
+    max-width: 62ch;
+    padding: 0;
+    margin: 22px 0 0;
+    list-style: none;
+  }
+  ul.points li {
+    padding: 12px 0 12px 26px;
+    border-top: 1px solid var(--line);
+    position: relative;
+    font-size: 1rem;
+  }
+  ul.points li:first-child { border-top: none; }
+  ul.points li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: 13px;
+    font-size: 0.55rem;
+    color: var(--gold);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold-strong);
+    background: var(--tag-bg);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    max-width: 980px;
+  }
+  .overview-grid > div {
+    background: var(--paper);
+    padding: 26px 22px;
+  }
+  .overview-grid h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: var(--gold-strong);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+  .overview-grid ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .overview-grid li { margin-bottom: 6px; }
+
+  .table-wrap { overflow-x: auto; max-width: 1080px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  thead th {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+    font-weight: 700;
+    padding: 0 16px 10px 0;
+    border-bottom: 2px solid var(--gold);
+  }
+  tbody td {
+    padding: 14px 16px 14px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: 1px solid var(--gold); }
+  td.task { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  td.issue { color: var(--ink-soft); }
+  td.dx { color: var(--ink); }
+  td.dx strong { color: var(--gold-strong); }
+
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 980px;
+  }
+  .ba-col h3 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+    font-size: 1.15rem;
+    margin: 0 0 16px;
+  }
+  .ba-col.before h3 { color: var(--ink-soft); }
+  .ba-col.after h3 { color: var(--gold-strong); }
+  .ba-col ul { margin: 0; padding: 0; list-style: none; }
+  .ba-col li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 0.94rem;
+  }
+  .ba-col li:first-child { border-top: none; }
+  @media (max-width: 720px) {
+    .ba-grid { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    max-width: 1080px;
+  }
+  .step {
+    border-top: 2px solid var(--gold);
+    padding-top: 14px;
+  }
+  .step .num {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .step h4 { margin: 0 0 8px; font-size: 0.98rem; }
+  .step p { margin: 0; font-size: 0.86rem; color: var(--ink-soft); }
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  .price-table td:last-child, .price-table th:last-child {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-strong);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .price-note {
+    margin-top: 14px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  .cover {
+    background: var(--navy);
+    color: var(--paper);
+    position: relative;
+  }
+  :root:not([data-theme="light"]) .cover { background: #061527; }
+  :root[data-theme="dark"] .cover { background: #061527; }
+  .cover .kicker { color: var(--gold); }
+  .cover h1 {
+    color: #f6f1e6;
+    font-size: clamp(2.3rem, 5vw, 3.6rem);
+    max-width: 16ch;
+  }
+  .cover .sub { color: rgba(246,241,230,0.75); }
+  .cover .org {
+    margin-top: 48px;
+    font-size: 0.9rem;
+    color: rgba(246,241,230,0.6);
+    letter-spacing: 0.04em;
+  }
+
+  .closing {
+    background: var(--navy);
+    color: #f6f1e6;
+  }
+  :root:not([data-theme="light"]) .closing { background: #061527; }
+  :root[data-theme="dark"] .closing { background: #061527; }
+  .closing h2 { color: #f6f1e6; }
+  .closing .lead { color: rgba(246,241,230,0.82); max-width: 58ch; }
+  .closing .lead strong { color: var(--gold); }
+  .closing .cta {
+    margin-top: 30px;
+    font-size: 1.02rem;
+    border-top: 1px solid rgba(246,241,230,0.25);
+    padding-top: 22px;
+    max-width: 58ch;
+  }
+  .closing a.mail { color: var(--gold); font-weight: 700; text-decoration: none; }
+  .closing a.mail:hover { text-decoration: underline; }
+
+  ::selection { background: var(--gold); color: var(--navy); }
+
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    :root {
+      --ink: #211d16;
+      --ink-soft: #5b5344;
+      --paper: #f6f1e6;
+      --surface: #ece4d2;
+      --line: rgba(33, 29, 22, 0.14);
+      --navy: #0b2a52;
+      --navy-soft: #12386b;
+      --gold: #96731c;
+      --gold-strong: #7a5c14;
+      --tag-bg: rgba(150, 115, 28, 0.1);
+    }
+    html { scroll-snap-type: none; }
+    .rail, .home-link { display: none !important; }
+    section {
+      width: 13.333in;
+      height: 7.5in;
+      min-height: 7.5in;
+      max-height: 7.5in;
+      padding: 0.7in 0.85in;
+      border-bottom: none;
+      page-break-after: always;
+      break-after: page;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    section:last-of-type { page-break-after: auto; break-after: auto; }
+    .cover, .closing {
+      background: var(--navy) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    :root:not([data-theme="light"]) .cover,
+    :root[data-theme="dark"] .cover,
+    :root:not([data-theme="light"]) .closing,
+    :root[data-theme="dark"] .closing {
+      background: #061527 !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a class="home-link" href="index.html">← トップページ</a>
+<nav class="rail" aria-hidden="true">
+  <button data-i="0" class="active"></button>
+  <button data-i="1"></button>
+  <button data-i="2"></button>
+  <button data-i="3"></button>
+  <button data-i="4"></button>
+  <button data-i="5"></button>
+  <button data-i="6"></button>
+  <button data-i="7"></button>
+  <button data-i="8"></button>
+  <button data-i="9"></button>
+  <button data-i="10"></button>
+  <button data-i="11"></button>
+</nav>
+
+<section class="cover">
+  <p class="kicker">Sake Brewery DX Plan</p>
+  <h1 class="display">酒造メーカー向け<br>DX導入プラン</h1>
+  <p class="sub">業務工程ごとに設計する、無理のないDXロードマップ</p>
+  <p class="org">合同会社QALAB　｜　新潟県酒造メーカー専用</p>
+</section>
+
+<section>
+  <p class="kicker">Concept</p>
+  <h2 class="display">本プランの狙い</h2>
+  <hr class="rule">
+  <div class="lead">
+    <p>酒造メーカーの仕事は、<strong>「製造準備」「酒類の製造」「充填」</strong>という3つの工程群に分解できます。</p>
+    <p>本プランは、その工程群ひとつひとつに「何が課題で、何をDX化すべきか」を対応づけて設計した、現場目線のDXロードマップです。</p>
+  </div>
+  <ul class="points">
+    <li>酒造現場7年の経験があるからこそ、工程の実情に合わせて提案できる</li>
+    <li>規格導入のような大がかりな改革ではなく、業務の"詰まり"を一つずつ解消するDX</li>
+    <li>各工程は独立して着手可能 ── 予算・優先度に合わせて小さく始められる</li>
+  </ul>
+</section>
+
+<section>
+  <p class="kicker">Overview</p>
+  <h2 class="display">酒造メーカーの仕事　全体像</h2>
+  <hr class="rule">
+  <div class="overview-grid">
+    <div>
+      <h3>① 製造準備</h3>
+      <ul>
+        <li>販売計画の立案</li>
+        <li>製造計画の立案</li>
+        <li>製造可能数量の確認</li>
+        <li>原料の調達</li>
+      </ul>
+    </div>
+    <div>
+      <h3>② 酒類の製造</h3>
+      <ul>
+        <li>製造日程の調整／精米／原料処理</li>
+        <li>製麹／酒母／醪</li>
+        <li>上槽／濾過・火入れ</li>
+        <li>貯蔵</li>
+      </ul>
+    </div>
+    <div>
+      <h3>③ 充填</h3>
+      <ul>
+        <li>生産計画の立案</li>
+        <li>在庫の確認</li>
+        <li>充填</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="tag">PHASE 1</span>
+  <h2 class="display">① 製造準備</h2>
+  <p class="sub">販売計画・製造計画・原料調達をデータでつなぐ</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>業務</th><th>課題</th><th>DX提案</th></tr></thead>
+      <tbody>
+        <tr><td class="task">販売計画の立案</td><td class="issue">需要予測が勘と経験に依存し、精度にばらつき</td><td class="dx">過去出荷実績×季節性を自動集計する<strong>需要予測シート</strong></td></tr>
+        <tr><td class="task">製造計画の立案</td><td class="issue">計画がベテラン1人の頭の中にあり属人化</td><td class="dx">計画テンプレート標準化＋<strong>Power Automateで自動スケジュール化</strong></td></tr>
+        <tr><td class="task">製造可能数量の確認</td><td class="issue">原料在庫・タンク容量・人員をその都度手計算</td><td class="dx">在庫×設備を連携した<strong>キャパシティ管理シート</strong></td></tr>
+        <tr><td class="task">原料の調達</td><td class="issue">発注タイミングが感覚頼みで欠品・過剰在庫リスク</td><td class="dx">発注点管理表＋<strong>自動発注アラート</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <span class="tag">PHASE 2-A</span>
+  <h2 class="display">② 酒類の製造｜計画〜仕込み</h2>
+  <p class="sub">仕込み工程の記録と精度をデータでそろえる</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>業務</th><th>課題</th><th>DX提案</th></tr></thead>
+      <tbody>
+        <tr><td class="task">製造日程の調整</td><td class="issue">紙のスケジュール表で、変更のたび転記が発生</td><td class="dx">仕込みスケジュールの<strong>ガントチャート化・自動更新</strong></td></tr>
+        <tr><td class="task">原料の精米</td><td class="issue">精米歩合・ロット情報が紙台帳で管理</td><td class="dx">精米ロットの<strong>データベース化</strong>とトレーサビリティ確保</td></tr>
+        <tr><td class="task">原料処理</td><td class="issue">洗米・浸漬時間などの記録が紙で転記負担</td><td class="dx">入力フォーム化＋自動集計（<strong>記録電子化</strong>）</td></tr>
+        <tr><td class="task">製麹</td><td class="issue">温度・湿度管理の記録が属人的</td><td class="dx">製麹管理表の<strong>デジタル化・異常値アラート</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <span class="tag">PHASE 2-B</span>
+  <h2 class="display">② 酒類の製造｜発酵〜貯蔵</h2>
+  <p class="sub">醪管理を中心に、再現性と品質のトレーサビリティを高める</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>業務</th><th>課題</th><th>DX提案</th></tr></thead>
+      <tbody>
+        <tr><td class="task">酒母</td><td class="issue">経過管理が個人ノート頼みで共有されない</td><td class="dx">酒母管理データの<strong>モデル化・可視化</strong></td></tr>
+        <tr><td class="task">醪</td><td class="issue">温度・ボーメ・酵素力価の記録が煩雑、再現性に課題</td><td class="dx"><strong>醪管理のデータ化・数式モデル化</strong>（再現性向上）</td></tr>
+        <tr><td class="task">上槽</td><td class="issue">上槽タイミング・搾り方の記録が紙</td><td class="dx">上槽記録のデジタル化と品質データ連携</td></tr>
+        <tr><td class="task">濾過・火入れ</td><td class="issue">温度管理記録とHACCP記録が別管理</td><td class="dx"><strong>HACCP記録と製造記録の一元化</strong></td></tr>
+        <tr><td class="task">貯蔵</td><td class="issue">在庫・品質（官能評価等）のトレーサビリティが弱い</td><td class="dx">貯蔵ロット×品質データの<strong>トレーサビリティ管理</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <span class="tag">PHASE 3</span>
+  <h2 class="display">③ 充填</h2>
+  <p class="sub">生産計画・在庫・充填記録を一本の流れにする</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>業務</th><th>課題</th><th>DX提案</th></tr></thead>
+      <tbody>
+        <tr><td class="task">生産計画の立案</td><td class="issue">瓶詰め計画が需要予測と連動していない</td><td class="dx">需要予測と連携した<strong>瓶詰め計画の自動化</strong></td></tr>
+        <tr><td class="task">在庫の確認</td><td class="issue">在庫確認がExcel転記・目視中心</td><td class="dx"><strong>Power Appsによるリアルタイム在庫管理</strong></td></tr>
+        <tr><td class="task">充填</td><td class="issue">充填記録が手書きで、酒税申告と二重入力になりがち</td><td class="dx">記録電子化＋<strong>酒税申告データとの自動連携</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Foundation</p>
+  <h2 class="display">3工程を貫く横断DX基盤</h2>
+  <hr class="rule">
+  <div class="overview-grid">
+    <div>
+      <h3>📊 酒税申告DX</h3>
+      <ul><li>手計算・手入力を排除</li><li>製造・充填記録から自動計算へ</li></ul>
+    </div>
+    <div>
+      <h3>📝 記録電子化基盤</h3>
+      <ul><li>仕込み・充填・出荷の記録を一元管理</li></ul>
+    </div>
+    <div>
+      <h3>🗂️ データ管理基盤</h3>
+      <ul><li>Power Platformで部門横断のデータ共有</li><li>乱立するExcelを解消</li></ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Impact</p>
+  <h2 class="display">Before / After</h2>
+  <hr class="rule">
+  <div class="ba-grid">
+    <div class="ba-col before">
+      <h3 class="display">Before</h3>
+      <ul>
+        <li>紙帳票が山積み、転記に時間がかかる</li>
+        <li>販売・製造・充填の計画がそれぞれ属人化</li>
+        <li>酒税申告が手計算・手入力</li>
+        <li>醪管理・品質記録が個人のノウハウ頼み</li>
+        <li>Excelファイルが乱立し、最新版が分からない</li>
+      </ul>
+    </div>
+    <div class="ba-col after">
+      <h3 class="display">After</h3>
+      <ul>
+        <li>記録は電子化され、自動集計される</li>
+        <li>販売予測 → 製造計画 → 充填計画がデータでつながる</li>
+        <li>酒税申告は記録データから自動計算</li>
+        <li>醪管理はモデル化され、再現性が高まる</li>
+        <li>Excelが「設計されたツール」として機能する</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Process</p>
+  <h2 class="display">導入プロセス</h2>
+  <p class="sub">土曜中心・小さく始めるDXモデル</p>
+  <div class="steps">
+    <div class="step">
+      <span class="num">01</span>
+      <h4>無料相談</h4>
+      <p>オンライン30分で課題ヒアリングと、効果が大きい入口を整理</p>
+    </div>
+    <div class="step">
+      <span class="num">02</span>
+      <h4>現場ヒアリング</h4>
+      <p>土曜に紙帳票・Excel・現場フローを工程ごとに確認</p>
+    </div>
+    <div class="step">
+      <span class="num">03</span>
+      <h4>DX設計</h4>
+      <p>平日夜に対象工程のツール・シート・記録様式を設計</p>
+    </div>
+    <div class="step">
+      <span class="num">04</span>
+      <h4>導入支援</h4>
+      <p>土曜に現場説明と運用フォロー、定着まで伴走</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Investment</p>
+  <h2 class="display">対象・料金（工程群別スポット）</h2>
+  <hr class="rule">
+  <div class="table-wrap">
+    <table class="price-table">
+      <thead><tr><th>工程群</th><th>メニュー</th><th>料金目安</th></tr></thead>
+      <tbody>
+        <tr><td class="task">① 製造準備</td><td class="issue">販売・製造計画DX</td><td>10〜20万円</td></tr>
+        <tr><td class="task">② 酒類の製造</td><td class="issue">醪管理モデル化</td><td>20〜40万円</td></tr>
+        <tr><td class="task">② 酒類の製造</td><td class="issue">記録電子化（仕込み〜貯蔵）</td><td>10〜25万円</td></tr>
+        <tr><td class="task">③ 充填</td><td class="issue">生産計画・在庫DX</td><td>10〜20万円</td></tr>
+        <tr><td class="task">横断基盤</td><td class="issue">酒税申告DX</td><td>10〜15万円</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="price-note">対象：新潟県内の中小規模蔵／品質保証部門がない蔵／紙帳票・Excel運用が中心の蔵<br>HACCP文書見直し・ISO9001要素導入はオプションで別途対応可能</p>
+</section>
+
+<section class="closing">
+  <p class="kicker">Closing</p>
+  <h2 class="display">工程群ごとに設計する、酒造メーカーのためのDXプラン</h2>
+  <div class="lead">
+    <p>酒造メーカーの仕事を「製造準備」「酒類の製造」「充填」に分解し、それぞれの工程が抱える課題に対して、無理のないDXを一つずつ設計する。</p>
+    <p>これが、酒造現場7年＋品質保証＋DX経験を持つ私だからこそ提供できる、<strong>現場目線のDX導入プラン</strong>です。規格導入のような大改革ではなく、小さく始めて、着実に定着させる。</p>
+  </div>
+  <p class="cta">無料相談（オンライン30分）受付中 ── 新潟県酒造組合・清酒学校ネットワークを通じた土曜開催の無料研修・勉強会も企画可能です。<br><a class="mail" href="mailto:contact@qalab-support.com">contact@qalab-support.com</a></p>
+</section>
+
+<script>
+  (function () {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.rail button'));
+    dots.forEach(function (d, i) {
+      d.addEventListener('click', function () {
+        sections[i].scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var idx = sections.indexOf(e.target);
+          dots.forEach(function (d) { d.classList.remove('active'); });
+          if (dots[idx]) dots[idx].classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+    sections.forEach(function (s) { io.observe(s); });
+  })();
+</script>
+</body>
+</html>
