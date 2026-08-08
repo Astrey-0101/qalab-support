@@ -1,100 +1,324 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>QALAB｜品質保証 × 分析化学 × DX</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Reveal.js -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/theme/black.min.css">
-
-  <style>
-    h1, h2, h3 {
-      font-weight: 600;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会社概要｜QALAB 品質保証 × 分析化学 × DX</title>
+<style>
+  :root {
+    --ink: #211d16;
+    --ink-soft: #5b5344;
+    --paper: #f6f1e6;
+    --surface: #ece4d2;
+    --line: rgba(33, 29, 22, 0.14);
+    --navy: #0b2a52;
+    --navy-soft: #12386b;
+    --gold: #96731c;
+    --gold-strong: #7a5c14;
+    --tag-bg: rgba(150, 115, 28, 0.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #f1ecdd;
+      --ink-soft: #b9ae95;
+      --paper: #0a1c33;
+      --surface: #102a4a;
+      --line: rgba(241, 236, 221, 0.14);
+      --navy: #7fb0e8;
+      --navy-soft: #a9c9f0;
+      --gold: #dcb04e;
+      --gold-strong: #eecb7c;
+      --tag-bg: rgba(220, 176, 78, 0.14);
     }
-    .accent {
-      color: #00c4b4;
-      font-weight: 700;
+  }
+  :root[data-theme="dark"] {
+    --ink: #f1ecdd;
+    --ink-soft: #b9ae95;
+    --paper: #0a1c33;
+    --surface: #102a4a;
+    --line: rgba(241, 236, 221, 0.14);
+    --navy: #7fb0e8;
+    --navy-soft: #a9c9f0;
+    --gold: #dcb04e;
+    --gold-strong: #eecb7c;
+    --tag-bg: rgba(220, 176, 78, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-snap-type: y proximity; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", "Noto Sans JP", "Segoe UI", sans-serif;
+    line-height: 1.75;
+  }
+  .display {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+    text-wrap: balance;
+  }
+
+  .rail {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    z-index: 50;
+  }
+  .rail button {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .rail button.active { opacity: 1; transform: scale(1.5); background: var(--gold); }
+  @media (max-width: 720px) { .rail { display: none; } }
+
+  .home-link {
+    position: fixed;
+    left: 22px;
+    top: 22px;
+    z-index: 50;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gold-strong);
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 6px 16px;
+    text-decoration: none;
+  }
+  .cover .home-link, .closing .home-link { color: #f6f1e6; border-color: var(--gold); background: rgba(0,0,0,0.15); }
+
+  section {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 88px 8vw;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  h1 { font-size: clamp(2rem, 4.2vw, 3rem); font-weight: 600; margin: 0 0 10px; color: var(--ink); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 600; margin: 0 0 6px; color: var(--ink); }
+  .sub { font-size: 1.05rem; color: var(--ink-soft); margin: 0 0 34px; max-width: 60ch; }
+  .rule { width: 56px; height: 2px; background: var(--gold); border: none; margin: 18px 0 32px; }
+
+  .lead { max-width: 62ch; font-size: 1.08rem; }
+  .lead p { margin: 0 0 16px; }
+  .lead strong { color: var(--gold-strong); font-weight: 700; }
+
+  ul.points { max-width: 62ch; padding: 0; margin: 22px 0 0; list-style: none; }
+  ul.points li { padding: 12px 0 12px 26px; border-top: 1px solid var(--line); position: relative; font-size: 1rem; }
+  ul.points li:first-child { border-top: none; }
+  ul.points li::before { content: "◆"; position: absolute; left: 0; top: 13px; font-size: 0.55rem; color: var(--gold); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold-strong);
+    background: var(--tag-bg);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    max-width: 980px;
+  }
+  .overview-grid > div { background: var(--paper); padding: 26px 22px; }
+  .overview-grid h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: var(--gold-strong);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  }
+  .overview-grid ul { margin: 0; padding-left: 18px; font-size: 0.92rem; color: var(--ink-soft); }
+  .overview-grid li { margin-bottom: 6px; }
+  @media (max-width: 780px) { .overview-grid { grid-template-columns: 1fr; } }
+
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 1100px; }
+  .step { border-top: 2px solid var(--gold); padding-top: 14px; }
+  .step .num {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .step h4 { margin: 0 0 8px; font-size: 0.96rem; }
+  .step p { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } }
+
+  .table-wrap { overflow-x: auto; max-width: 900px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  thead th {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+    font-weight: 700;
+    padding: 0 16px 10px 0;
+    border-bottom: 2px solid var(--gold);
+  }
+  tbody td { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 1px solid var(--gold); }
+  td.task { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  td.dx { color: var(--ink-soft); }
+  td.price { color: var(--gold-strong); font-weight: 700; white-space: nowrap; text-align: right; }
+  .price-note { margin-top: 14px; font-size: 0.82rem; color: var(--ink-soft); }
+
+  .cover { background: var(--navy); color: var(--paper); position: relative; }
+  :root:not([data-theme="light"]) .cover { background: #061527; }
+  :root[data-theme="dark"] .cover { background: #061527; }
+  .cover .kicker { color: var(--gold); }
+  .cover h1 { color: #f6f1e6; font-size: clamp(2.3rem, 5vw, 3.6rem); max-width: 18ch; }
+  .cover .sub { color: rgba(246,241,230,0.75); }
+  .cover .org { margin-top: 48px; font-size: 0.9rem; color: rgba(246,241,230,0.6); letter-spacing: 0.04em; }
+
+  .closing { background: var(--navy); color: #f6f1e6; }
+  :root:not([data-theme="light"]) .closing { background: #061527; }
+  :root[data-theme="dark"] .closing { background: #061527; }
+  .closing h2 { color: #f6f1e6; }
+  .closing .lead { color: rgba(246,241,230,0.82); max-width: 58ch; }
+  .closing .lead strong { color: var(--gold); }
+  .closing .cta { margin-top: 30px; font-size: 1.02rem; border-top: 1px solid rgba(246,241,230,0.25); padding-top: 22px; max-width: 58ch; }
+  .closing a.mail { color: var(--gold); font-weight: 700; text-decoration: none; }
+  .closing a.mail:hover { text-decoration: underline; }
+
+  ::selection { background: var(--gold); color: var(--navy); }
+
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html { scroll-snap-type: none; }
+    .rail, .home-link { display: none !important; }
+    section {
+      width: 13.333in; height: 7.5in; min-height: 7.5in; max-height: 7.5in;
+      padding: 0.7in 0.85in; border-bottom: none;
+      page-break-after: always; break-after: page; box-sizing: border-box; overflow: hidden;
     }
-  </style>
+    section:last-of-type { page-break-after: auto; break-after: auto; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
 </head>
-
 <body>
-<div class="reveal">
-<div class="slides">
 
-<section>
-  <h1>QALAB</h1>
-  <h3>品質保証 × 分析化学 × DX の統合ソリューション</h3>
-  <p>QA/DX Architect｜遠藤 怜</p>
+<a class="home-link" href="index.html">← トップページ</a>
+<nav class="rail" aria-hidden="true">
+  <button data-i="0" class="active"></button>
+  <button data-i="1"></button>
+  <button data-i="2"></button>
+  <button data-i="3"></button>
+  <button data-i="4"></button>
+  <button data-i="5"></button>
+  <button data-i="6"></button>
+  <button data-i="7"></button>
+  <button data-i="8"></button>
+  <button data-i="9"></button>
+</nav>
+
+<section class="cover">
+  <p class="kicker">Company Profile</p>
+  <h1 class="display">品質保証 × 分析化学 × DX<br>の統合ソリューション</h1>
+  <p class="sub">食品メーカーの品質保証を、規格構築・分析法開発・DXで一気に強くする</p>
+  <p class="org">合同会社QALAB　｜　QA/DX Architect　遠藤 怜</p>
 </section>
 
 <section>
-  <h2>ミッション</h2>
-  <h3 class="accent">品質保証を「利益を生む機能」に変える。</h3>
-  <p>規格構築 × 分析化学 × DX を統合し、企業の品質保証を次のステージへ。</p>
+  <p class="kicker">Mission</p>
+  <h2 class="display">品質保証を、「利益を生む機能」に変える。</h2>
+  <hr class="rule">
+  <div class="lead">
+    <p>多くの食品メーカーで、品質保証部門は<strong>「コストセンター」「トラブル対応部隊」</strong>として扱われがちです。</p>
+    <p>QALABは、規格構築・分析化学・DXの3つを統合することで、品質保証を試験削減・利益貢献・意思決定の高速化につなげる<strong>「攻めの機能」</strong>へと再設計します。</p>
+  </div>
 </section>
 
 <section>
-  <h2>Reyの強み</h2>
-  <ul>
-    <li>食品・酒造・医薬品の3業界で12年</li>
-    <li>GMP / GCTP / HACCP / FSSC / ISO17025 を構築レベルで経験</li>
-    <li>LC-MS/MS・GC-MS/MS・PCR・ICPなど分析技術が広い</li>
-    <li>年間600時間削減（累計5000時間ROI）</li>
+  <p class="kicker">Profile</p>
+  <h2 class="display">代表・遠藤怜の強み</h2>
+  <hr class="rule">
+  <ul class="points">
+    <li>食品・酒造・医薬品の3業界で12年、QC/QAから規格構築・試験法開発まで一貫して担当</li>
+    <li>GMP / GCTP / HACCP / FSSC22000 / ISO17025 を構築レベルで経験</li>
+    <li>LC-MS/MS・GC-MS/MS・PCR・ICPなど分析技術の実務経験が広い</li>
+    <li>菓子メーカーでのDXプロジェクトで年間600時間削減（累計5000時間相当のROI）</li>
+    <li>原料評価法の開発により9000万円の利益貢献</li>
+    <li>ISO17025試験所認定プロジェクトの代表を務めた実績</li>
+  </ul>
+</section>
+
+<section>
+  <p class="kicker">3 Pillars</p>
+  <h2 class="display">サービス 3本柱</h2>
+  <hr class="rule">
+  <div class="overview-grid">
+    <div>
+      <h3>① 品質保証・規格構築</h3>
+      <ul>
+        <li>HACCP / FSSC22000 / GMP / GCTP / ISO17025</li>
+        <li>文書体系の新規構築・棚卸し</li>
+        <li>品質監査（内部・外部）</li>
+        <li>OEM先の品質保証指導</li>
+      </ul>
+    </div>
+    <div>
+      <h3>② 分析法開発・妥当性評価</h3>
+      <ul>
+        <li>LC-MS/MS・GC-MS/MS・PCRを用いた試験法開発</li>
+        <li>妥当性評価（精度・真度・再現性）</li>
+        <li>劣化モデル構築（賞味期限延長）</li>
+        <li>試験削減モデル構築</li>
+      </ul>
+    </div>
+    <div>
+      <h3>③ QA × DX</h3>
+      <ul>
+        <li>Excel自動化（VBA / Power Automate）</li>
+        <li>品質データベース構築</li>
+        <li>記録の電子化・承認フローのDX化</li>
+        <li>試験削減モデル構築</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Track Record</p>
+  <h2 class="display">実績</h2>
+  <hr class="rule">
+  <ul class="points">
     <li>原料評価法開発で9000万円の利益貢献</li>
-    <li>ISO17025試験所認定プロジェクト代表</li>
-  </ul>
-</section>
-
-<section>
-  <h1>サービス 3本柱</h1>
-</section>
-
-<section>
-  <h2>① 品質保証・規格構築</h2>
-  <h3 class="accent">QA Standards Architect</h3>
-  <p>HACCP / FSSC22000 / GMP / GCTP / ISO17025 の構築・運用を支援。</p>
-  <ul>
-    <li>文書体系の新規構築</li>
-    <li>既存文書の棚卸し・再構築</li>
-    <li>品質監査（内部・外部）</li>
-    <li>OEM先の品質保証指導</li>
-    <li>ISO17025認定プロジェクト支援</li>
-  </ul>
-</section>
-
-<section>
-  <h2>② 分析法開発・妥当性評価</h2>
-  <h3 class="accent">Analytical Method Studio</h3>
-  <p>分析化学 × 微生物 × 統計を統合した試験法開発。</p>
-  <ul>
-    <li>新規試験法開発（LC/MS/MS・GC/MS/MS・PCR）</li>
-    <li>妥当性評価（精度・真度・再現性）</li>
-    <li>劣化モデル構築（賞味期限延長）</li>
-    <li>試験削減モデル構築</li>
-  </ul>
-</section>
-
-<section>
-  <h2>③ QA × DX</h2>
-  <h3 class="accent">QA Digital Transformation Lab</h3>
-  <p>品質保証の現場を理解したDX人材として、業務効率化を実現。</p>
-  <ul>
-    <li>Excel自動化（VBA / Power Automate）</li>
-    <li>品質データベース構築</li>
-    <li>試験削減モデル構築</li>
-    <li>記録の電子化・承認フローのDX化</li>
-  </ul>
-</section>
-
-<section>
-  <h2>実績</h2>
-  <ul>
-    <li>原料評価法開発で9000万円の利益貢献</li>
-    <li>賞味期限を20〜50%延長</li>
-    <li>年間600時間削減（累計5000時間ROI）</li>
+    <li>賞味期限を20〜50%延長する劣化モデルを構築</li>
+    <li>DXにより年間600時間削減（累計5000時間相当のROI）</li>
     <li>ISO17025試験所認定プロジェクト代表</li>
     <li>GMP/GCTP文書管理責任者として品質保証体制を再構築</li>
     <li>HACCP文書を新規構築し品質管理体制を刷新</li>
@@ -102,60 +326,77 @@
 </section>
 
 <section>
-  <h2>導入メリット</h2>
-  <ul>
+  <p class="kicker">Benefit</p>
+  <h2 class="display">導入メリット</h2>
+  <hr class="rule">
+  <ul class="points">
     <li>監査対応が強くなる</li>
     <li>品質トラブルが減る</li>
     <li>試験削減でコストが下がる</li>
-    <li>生産性が上がる</li>
+    <li>現場の生産性が上がる</li>
     <li>品質保証部門が利益貢献部門になる</li>
-    <li>意思決定が高速化</li>
+    <li>データに基づく意思決定が高速化する</li>
   </ul>
 </section>
 
 <section>
-  <h2>価格帯</h2>
-  <ul>
-    <li>スポット支援：20〜80万円</li>
-    <li>プロジェクト支援：80〜200万円</li>
-    <li>月額顧問：10〜30万円</li>
-  </ul>
+  <p class="kicker">Investment</p>
+  <h2 class="display">価格帯</h2>
+  <hr class="rule">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>支援形態</th><th>内容</th><th>料金目安</th></tr></thead>
+      <tbody>
+        <tr><td class="task">スポット支援</td><td class="dx">課題単位・短期のピンポイント支援</td><td class="price">20〜80万円</td></tr>
+        <tr><td class="task">プロジェクト支援</td><td class="dx">規格構築・試験法開発などの中規模プロジェクト</td><td class="price">80〜200万円</td></tr>
+        <tr><td class="task">月額顧問</td><td class="dx">継続的な相談・レビュー・伴走支援</td><td class="price">10〜30万円</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="price-note">※あくまで目安です。企業規模・支援範囲に応じて柔軟に見積りします。</p>
 </section>
 
 <section>
-  <h2>導入プロセス</h2>
-  <ol>
-    <li>ヒアリング（無料）</li>
-    <li>現状分析・課題抽出</li>
-    <li>改善提案・見積り</li>
-    <li>プロジェクト開始</li>
-    <li>成果報告・運用定着支援</li>
-  </ol>
+  <p class="kicker">Process</p>
+  <h2 class="display">導入プロセス</h2>
+  <div class="steps">
+    <div class="step"><span class="num">01</span><h4>ヒアリング</h4><p>無料でオンライン相談し、現状の課題を整理</p></div>
+    <div class="step"><span class="num">02</span><h4>現状分析</h4><p>文書・記録・体制を確認し課題を抽出</p></div>
+    <div class="step"><span class="num">03</span><h4>改善提案</h4><p>優先度と効果を踏まえた提案・見積り</p></div>
+    <div class="step"><span class="num">04</span><h4>プロジェクト開始</h4><p>合意した範囲・期間で支援を実行</p></div>
+    <div class="step"><span class="num">05</span><h4>定着支援</h4><p>成果報告と運用定着までフォロー</p></div>
+  </div>
 </section>
 
-<section>
-  <h2>お問い合わせ</h2>
-  <p>品質保証の悩みを、構築・分析・DXで一気に解決します。</p>
-  <p>まずは無料相談から。</p>
-
-  <p style="margin-top:40px;">
-    <a href="index.html" style="color:#00c4b4; font-weight:700;">
-      トップページに戻る
-    </a>
-  </p>
+<section class="closing">
+  <p class="kicker">Contact</p>
+  <h2 class="display">品質保証の悩みを、構築・分析・DXで一気に解決します。</h2>
+  <div class="lead">
+    <p>食品メーカーの品質保証は、<strong>規格・分析・DXの3つを同時に扱える人材が少なく</strong>、部門ごとに個別最適化されがちです。QALABは、その3つを横断して統合的に設計します。</p>
+  </div>
+  <p class="cta">まずは無料相談から。<br><a class="mail" href="mailto:contact@qalab-support.com">contact@qalab-support.com</a> までお気軽にご連絡ください。</p>
 </section>
 
-
-</div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
 <script>
-  Reveal.initialize({
-    hash: true,
-    slideNumber: true,
-    transition: 'fade'
-  });
+  (function () {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.rail button'));
+    dots.forEach(function (d, i) {
+      d.addEventListener('click', function () {
+        sections[i].scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var idx = sections.indexOf(e.target);
+          dots.forEach(function (d) { d.classList.remove('active'); });
+          if (dots[idx]) dots[idx].classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+    sections.forEach(function (s) { io.observe(s); });
+  })();
 </script>
 
 </body>
